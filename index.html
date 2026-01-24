@@ -13,22 +13,39 @@
       flex-direction: column;
       min-height: 100vh;
     }
-
     header {
       text-align: center;
       padding: 60px 20px 30px;
     }
-    header h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      background: linear-gradient(90deg, #ffecd2, #fcb69f);
+  
+    .title {
+      font-size: 3.5em;
+      font-weight: 700;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      animation: fadeInDown 1.5s ease;
     }
-    header p {
-      font-size: 1.2em;
-      color: #ddd;
+  
+    .subtitle {
+      font-size: 1.4em;
+      color: #f0f0f0;
+      font-style: italic;
+      margin-top: 10px;
+      animation: fadeInUp 2s ease;
     }
+  
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
 
     .container {
       flex: 1;
@@ -86,8 +103,18 @@
 </head>
 <body>
   <header>
-    <h1>My Stories</h1>
-    <p>Step into worlds of imagination and emotion</p>
+    <h1 class="title">UnToldMyths</h1>
+    <p class="subtitle">
+      In every shadow lies a forgotten tale,<br>
+      In every silence, a voice waiting to be heard.<br>
+      Step beyond the ordinary and into realms unseen,<br>
+      Where myths breathe and emotions take flight.<br>
+      Stories are not just words, they are worlds,<br>
+      Worlds where imagination becomes truth and silence speaks.<br>
+      Each page is a doorway to timeless whispers,<br>
+      Crafted to stir hearts and awaken wonder. 
+      <span style="font-style: italic; font-size: 0.9em;">— DEVI PRADEEP</span>
+    </p>
   </header>
 
   <div class="container">
@@ -127,3 +154,4 @@
   </script>
 </body>
 </html>
+
