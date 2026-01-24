@@ -5,41 +5,125 @@
   <title>My Stories</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
       text-align: center;
-      padding: 50px;
+      padding: 60px 20px 30px;
     }
-    h1 {
-      color: #333;
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ffecd2, #fcb69f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .links {
-      margin-top: 30px;
+    header p {
+      font-size: 1.2em;
+      color: #ddd;
     }
-    a {
-      display: block;
-      margin: 10px;
-      padding: 10px;
+
+    .container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 16px;
+      backdrop-filter: blur(12px);
+      padding: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.4);
+    }
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.5em;
+      color: #ffecd2;
+    }
+    .card p {
+      color: #eee;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+    .card a {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 15px;
       text-decoration: none;
-      color: white;
-      background: #007acc;
-      border-radius: 5px;
-      width: 200px;
-      margin-left: auto;
-      margin-right: auto;
+      color: #fff;
+      background: linear-gradient(90deg, #ff6a00, #ee0979);
+      border-radius: 8px;
+      font-weight: 600;
+      transition: opacity 0.2s ease;
     }
-    a:hover {
-      background: #005fa3;
+    .card a:hover {
+      opacity: 0.85;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255,255,255,0.1);
+      font-size: 0.9em;
+      color: #eee;
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to My Stories</h1>
-  <p>Select a story to read:</p>
-  <div class="links">
-    <a href="story.html">ఒక నిశ్శబ్ద సమరం</a>
-    <a href="silentbattle.html">A Silent Battle</a>
-    <a href="whatwasthat.html">Leaning on Shadows</a>
+  <header>
+    <h1>My Stories</h1>
+    <p>Step into worlds of imagination and emotion</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>ఒక నిశ్శబ్ద సమరం</h2>
+      <p>A poignant Telugu tale about inner conflict and resilience, capturing the silence of struggle.</p>
+      <a href="story.html">Read Story</a>
+    </div>
+
+    <div class="card">
+      <h2>A Silent Battle</h2>
+      <p>An English narrative exploring quiet perseverance and the unseen wars we fight within ourselves.</p>
+      <a href="silentbattle.html">Read Story</a>
+    </div>
+
+    <div class="card">
+      <h2>Leaning on Shadows</h2>
+      <p>A mysterious journey into the unknown, where shadows become companions and secrets unfold.</p>
+      <a href="whatwasthat.html">Read Story</a>
+    </div>
   </div>
+
+  <footer>
+    <span id="visitor-count">Visits: 0</span>
+  </footer>
+
+  <script>
+    // Simple visitor counter using localStorage
+    let visits = localStorage.getItem("visits");
+    if (!visits) {
+      visits = 1;
+    } else {
+      visits = parseInt(visits) + 1;
+    }
+    localStorage.setItem("visits", visits);
+    document.getElementById("visitor-count").textContent = "Visits: " + visits;
+  </script>
 </body>
 </html>
