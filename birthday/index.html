@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anime Surprise Delivery</title>
+    <style>
+        :root {
+            --primary-color: #ff6b81;
+            --secondary-color: #70a1ff;
+            --dark-color: #2f3542;
+            --anime-bg: #fffbf0;
+            --gold-glow: radial-gradient(circle at center, #2c2512 0%, #0a0a0d 100%);
+            --luxury-gold: #ffd700;
+            --soft-gold: #ffeaa7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #1a1a2e;
+            color: #ffffff;
+        }
+
+        /* Ambient Dynamic Background Layers */
+        .sky-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        .scene {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 15px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .scene.active {
+            display: flex;
+        }
+
+        /* Global Mute/Unmute System Controller */
+        .audio-pill {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            border: 2px solid white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .audio-pill:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: bold;
+            border: 3px solid var(--dark-color);
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 8px;
+            transition: transform 0.2s, background 0.3s;
+            box-shadow: 4px 4px 0px var(--dark-color);
+        }
+
+        button:hover { transform: scale(1.05); }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-secondary { background-color: var(--secondary-color); color: white; }
+        
+        /* Anime Styled Dialogue Box */
+        .anime-bubble {
+            background: var(--anime-bg);
+            color: var(--dark-color);
+            padding: 25px;
+            border-radius: 30px;
+            border: 4px solid var(--dark-color);
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 10;
+        }
+
+        .anime-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 20px 20px 0;
+            border-style: solid;
+            border-color: var(--anime-bg) transparent;
+            display: block;
+            width: 0;
+        }
+        .anime-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 22px 22px 0;
+            border-style: solid;
+            border-color: var(--dark-color) transparent;
+            display: block;
+            width: 0;
+            z-index: -1;
+        }
+
+        /* Scene 1: Exterior Setup */
+        .house-environment {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            background: rgba(245, 246, 250, 0.9);
+            border-radius: 20px;
+            border: 4px solid var(--dark-color);
+            border-bottom: 10px solid #718093;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .house-graphic {
+            position: absolute;
+            right: 10%;
+            bottom: 0;
+            width: 180px;
+            height: 220px;
+            background: #ff7f50;
+            border: 4px solid var(--dark-color);
+            border-bottom: none;
+        }
+        .door-element {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 110px;
+            background: #cd6133;
+            border: 3px solid var(--dark-color);
+        }
+        .calling-bell {
+            position: absolute;
+            right: -20px;
+            top: 45px;
+            width: 14px;
+            height: 14px;
+            background: #ffd700;
+            border-radius: 50%;
+            border: 2px solid var(--dark-color);
+        }
+
+        /* Character Canvas Layers */
+        .delivery-boy-character {
+            position: absolute;
+            bottom: 0;
+            left: -120px;
+            width: 75px;
+            height: 150px;
+            transition: all 3.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .boy-head {
+            width: 35px;
+            height: 35px;
+            background: #ffdbac;
+            border-radius: 50%;
+            border: 3px solid var(--dark-color);
+            position: relative;
+        }
+        .boy-head::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -2px;
+            width: 34px;
+            height: 15px;
+            background: #341f97;
+            border-radius: 10px 10px 0 0;
+            border: 2px solid var(--dark-color);
+        }
+        .boy-body {
+            width: 45px;
+            height: 65px;
+            background: #54a0ff;
+            border: 3px solid var(--dark-color);
+            border-radius: 8px;
+            position: relative;
+        }
+        .boy-body::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 10px;
+            width: 18px;
+            height: 45px;
+            background: #10ac84;
+            border: 3px solid var(--dark-color);
+            border-radius: 4px;
+        }
+        .boy-body::after {
+            content: '📦';
+            position: absolute;
+            right: -22px;
+            top: 18px;
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+        .boy-arm-animated .boy-body::after {
+            animation: ringAction 0.6s infinite alternate;
+        }
+        .boy-legs {
+            display: flex;
+            justify-content: space-between;
+            width: 30px;
+            height: 35px;
+        }
+        .leg { width: 10px; height: 100%; background: #2f3542; border: 2px solid var(--dark-color); }
+        .delivery-walk { left: calc(50% - 95px); }
+
+        /* Scene 2 Front Frame Configuration */
+        #scene-doorway { background: rgba(223, 228, 234, 0.9); color: var(--dark-color); }
+        .front-boy-pov {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        .giant-boy-avatar { font-size: 110px; line-height: 1; }
+        .hand-box-container { font-size: 50px; margin-top: -20px; animation: float 2s infinite ease-in-out; }
+        .star-rating span { font-size: 38px; color: #ccc; cursor: pointer; }
+        .star-rating span.active { color: #ffca28; }
+
+        /* Scene 3 Styles */
+        #scene-parcel { background: rgba(87, 96, 111, 0.9); }
+        .parcel-box-graphic {
+            font-size: 130px;
+            cursor: pointer;
+            user-select: none;
+            animation: float 2.5s infinite ease-in-out;
+        }
+        .key-input-field {
+            padding: 14px;
+            font-size: 20px;
+            border-radius: 15px;
+            border: 4px solid var(--dark-color);
+            width: 85%;
+            max-width: 300px;
+            text-align: center;
+            margin: 15px 0;
+            text-transform: uppercase;
+            outline: none;
+        }
+
+        /* Scene 4: Black & Gold Theme */
+        #scene-celebration { 
+            background: #0a0a0d; 
+            transition: background 1.2s ease; 
+            position: relative;
+        }
+        .ambient-glow-active { 
+            background: var(--gold-glow) !important; 
+        }
+        
+        .room-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            overflow: hidden;
+        }
+        
+        .luxury-lights {
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 10%, rgba(255,215,0,0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 10%, rgba(255,215,0,0.15) 0%, transparent 40%),
+                linear-gradient(to bottom, rgba(255,215,0,0.05), transparent);
+            position: absolute;
+            top: 0;
+        }
+        
+        .balloon-arch-frame {
+            position: absolute;
+            top: 5%;
+            width: 90%;
+            max-width: 600px;
+            height: 80%;
+            border: 8px dashed rgba(255, 215, 0, 0.3);
+            border-bottom: none;
+            border-radius: 150px 150px 0 0;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+        }
+        
+        .balloon-arch-frame::before {
+            content: '🎈🖤💛🎈🖤💛🎈';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            letter-spacing: 8px;
+            white-space: nowrap;
+        }
+
+        .gold-stage-text {
+            font-size: 32px;
+            font-weight: 900;
+            color: transparent;
+            background: linear-gradient(135deg, #ffd700 0%, #fffacc 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 4px 10px rgba(0,0,0,0.9);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            display: none; 
+            animation: shineText 2s infinite alternate;
+        }
+
+        @keyframes shineText {
+            0% { filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); }
+            100% { filter: drop-shadow(0 0 20px rgba(255,215,0,0.9)); }
+        }
+
+        .virtual-cake-container { font-size: 110px; position: relative; margin: 25px 0; filter: drop-shadow(0 0 15px rgba(255,215,0,0.4)); }
+        .candle-flame {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 35px;
+            display: none;
+            animation: flicker 0.4s infinite alternate;
+        }
+
+        /* Upgraded Scene 5 Letter Box Layout with Typing Effects */
+        .cute-letter-box {
+            background: #fff0f5;
+            padding: 35px;
+            border-radius: 30px;
+            max-width: 95%;
+            width: 680px;
+            border: 4px dashed #ffb6c1;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            color: #d81b60;
+            text-align: left;
+            line-height: 1.9;
+            font-size: 18px; /* Made scale slightly larger for better romantic impact */
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .letter-line {
+            margin-bottom: 16px;
+            min-height: 26px;
+            opacity: 0;
+            transform: translateY(5px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        .letter-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .typed-cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #d81b60;
+            animation: blink 0.7s infinite;
+            margin-left: 2px;
+        }
+
+        canvas#fxCanvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 99; }
+
+        @keyframes popIn { 0% { transform: scale(0.85); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes ringAction { 0% { transform: translateX(0) scale(1); } 100% { transform: translateX(10px) scale(1.05); } }
+        @keyframes flicker { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        @keyframes blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <!-- BACKGROUND DYNAMIC LAYER -->
+    <div class="sky-bg" id="starfield"></div>
+
+    <canvas id="fxCanvas"></canvas>
+    
+    <!-- AUDIO BUILT-IN MEDIA SYSTEM -->
+    <div class="audio-pill" id="music-pill" onclick="toggleMuteSwitch()">
+        <span id="audio-icon">🔊</span>
+        <span id="audio-status">Audio Active</span>
+    </div>
+
+    <!-- Audio Streams Setup -->
+    <audio id="bellAudio" src="bellring.mp3" loop preload="auto"></audio>
+    <audio id="song1" src="song1.mp3" loop preload="auto"></audio>
+    <audio id="song2" src="song2.mp3" loop preload="auto"></audio>
+    <audio id="song3" src="song3.mp3" loop preload="auto"></audio>
+
+    <!-- SCENE 1: WIDE ANGLE HOME EXTERIOR -->
+    <div id="scene-exterior" class="scene active">
+        <h2 style="color: #ffffff; margin-bottom: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Surprise Delivery At Your Doorstep</h2>
+        <div class="house-environment">
+            <div id="delivery-boy" class="delivery-boy-character">
+                <div class="boy-head"></div>
+                <div class="boy-body"></div>
+                <div class="boy-legs">
+                    <div class="leg"></div>
+                    <div class="leg"></div>
+                </div>
+            </div>
+            <div class="house-graphic">
+                <div class="door-element">
+                    <div class="calling-bell"></div>
+                </div>
+            </div>
+        </div>
+        <p id="exterior-instruction" style="margin-top: 20px; font-weight: bold; color: #ffffff; font-size: 16px; text-shadow: 0 1px 3px rgba(0,0,0,0.5);">Delivery boy is arriving at the gate...</p>
+        <button id="btn-open-door" class="btn-primary" style="display: none;" onclick="openDoorTransition()">Open Door 🚪</button>
+    </div>
+
+    <!-- SCENE 2: ANIME STANDING FRONT POV VIEW -->
+    <div id="scene-doorway" class="scene">
+        <div class="front-boy-pov">
+            <div id="boy-avatar-pov" class="giant-boy-avatar">👦</div>
+            <div class="hand-box-container"></div>
+        </div>
+        <div class="anime-bubble">
+            <div id="pov-dialogue-box"></div>
+        </div>
+    </div>
+
+    <!-- SCENE 3: PARCEL INTERACTION -->
+    <div id="scene-parcel" class="scene">
+        <div id="parcel-closed" class="parcel-box-graphic" onclick="showKeyVerification()">📦</div>
+        <h3 id="parcel-hint-text" style="color: white; margin-top: 25px;">Tap on the parcel box to open it!</h3>
+        
+        <div id="key-auth-area" style="display: none; flex-direction: column; align-items: center; width: 100%;">
+            <p style="color: white; font-size: 18px; font-weight: 600;">Enter Key to Unlock:</p>
+            <input type="text" id="passkey-input" class="key-input-field" placeholder="Type Key Here...">
+            <button class="btn-primary" onclick="checkPasskey()">Submit</button>
+            <p id="error-logs" style="color: #ff4757; font-weight: bold; margin-top: 15px; font-size: 16px;"></p>
+        </div>
+    </div>
+
+    <!-- SCENE 4: VIRTUAL CELEBRATION ROOM -->
+    <div id="scene-celebration" class="scene">
+        <div id="room-decor" class="room-decoration">
+            <div class="luxury-lights"></div>
+            <div style="display: flex; justify-content: center; width: 100%; height: 100%;">
+                <div class="balloon-arch-frame"></div>
+            </div>
+        </div>
+
+        <div id="pre-celebration-message" class="anime-bubble" style="text-align: center; border-color: var(--luxury-gold); box-shadow: 0 0 20px rgba(255,215,0,0.3);">
+            <p style="font-size: 16px; color: #2f3542; line-height: 1.6; margin-bottom: 20px; font-weight: 500;">
+                "I want to celebrate your birthday by standing beside you holding your hand and singing birthday song for you but as of now we are not together so I can't do that for now but I promise one day I'll stand holding your hand and I'll sing birthday song for you but for now let's celebrate the birthday virtual hit that button to start celebrating"
+            </p>
+            <button class="btn-primary" style="background-color: #1a1a2e; border-color: var(--luxury-gold); color: var(--luxury-gold);" onclick="initiateVirtualParty()">Let's Celebrate 🎉</button>
+        </div>
+
+        <div id="interactive-cake-zone" style="display: none; flex-direction: column; align-items: center; z-index: 100;">
+            <h1 id="shining-bday-title" class="gold-stage-text">HAPPY BIRTHDAY DEAR NANNA</h1>
+            <div class="virtual-cake-container">
+                <div id="candle-fire" class="candle-flame">🔥</div>
+                🎂
+            </div>
+            <button id="btn-lit-candles" class="btn-secondary" style="background-color: #d4af37; border-color: #0a0a0d;" onclick="lightCandles()">Lit the Candles 🕯️</button>
+            <button id="btn-blow-candles" class="btn-primary" style="background-color: #ffffff; color: #0a0a0d; border-color: #d4af37; display: none;" onclick="blowCandles()">Blow out Candles 🌬️</button>
+        </div>
+    </div>
+
+    <!-- SCENE 5: FINAL LETTER -->
+    <div id="scene-letter" class="scene">
+        <div class="cute-letter-box" id="letter-box-container">
+            <!-- Content types organically here -->
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATIONS
+        const targetGirlName = "Nanna";  
+        const senderName = "your favorite irritating person";        
+        const correctSecretKey = "RUPA"; // Functional logic passkey key is strictly kept intact as requested
+
+        // Raw Letter Array segments 
+        const letterParagraphs = [
+            "Happy Birthday Nanna ❤️",
+            "Class lo nitho tappa a amai tho akkkuva matladaledu. Appude teliyaledu... nuvvu na life lo ala undipothav ani.",
+            "Btech ayaka manam dooram ayyam. Kani dooram perigina kuda manam inka close aipoyam. Edhi ela jarigindo naake ardam katledhu.",
+            "Rendu mudu meetings lo ne naku life long memories ichav. Railway station lo night antha matladukovadam... adhi na heart lo save cheskunna best scene. Prathi sari gurthosthe kallu thadusthay.",
+            "Appatinundi nuvvu naaku responsibility ayyav. Nannu chusukovadam, nannu correct cheyyadam, nannu vadileyakunda undadam. Nuvvu na support system, na opponent, na best person. Nuvvu lekunte nenu ekkadiko vellipoyevadni emo.",
+            "Godava padina kuda ventane kaliaipotham. Endukante nuvvu na problem kadu... nuvvu na solution. Life lo entha mandi undalsina avasaram ledu. Oka manishi chalu. Nuvvu naaku saripotav. Adhi naaku chalu.",
+            "Nenu antha strong ga undadaniki karanam nuvve. Nenu padipoyina prathi saari nuvvu lekundane lepi unnav. Nuvvu support chesthav, ardam cheskuntav, vadileyavu. Ee feeling ki peru em ani naaku teliyadu. Kani idhi naaku life long kavali.",
+            "Words lo cheppalenu Nanna... nuvvu naaku entha important oo. Not all love can be shown in words. Naa matala kanna chaala chaala ekkuva.",
+            "Telusa... Oka abbai life lo correct ammai unte avarini gurinchi aalochinchalsina avasaram undadu. Nuvvu unnav. Nuvvu lekunda nenu incomplete. Idhi cheppadam kashtam... kani idhe nijam.",
+            "Nuvvu naaku dorikina best thing. Nuvvu unnav ante naaku bhayam undadu. Happy Birthday to the girl who made Btech worth... and made my life worth ❤️"
+        ];
+
+        let failCount = 0;
+        let fxType = null; 
+        let particles = [];
+        let isGlobalMuted = false;
+        let activeAudioTrack = null;
+        
+        const bellAudio = document.getElementById('bellAudio');
+        const song1 = document.getElementById('song1');
+        const song2 = document.getElementById('song2');
+        const song3 = document.getElementById('song3');
+
+        window.onload = function() {
+            generateStarfield();
+            
+            setTimeout(() => {
+                const boy = document.getElementById('delivery-boy');
+                boy.classList.add('delivery-walk');
+                
+                setTimeout(() => {
+                    boy.classList.add('boy-arm-animated');
+                    document.getElementById('exterior-instruction').innerText = "🛎️ He is ringing the bell! Click Open Door below.";
+                    document.getElementById('btn-open-door').style.display = 'inline-block';
+                    
+                    changeActiveTrack(bellAudio);
+                }, 3500);
+            }, 300);
+
+            document.getElementById('passkey-input').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') checkPasskey();
+            });
+            initCanvasFX();
+        };
+
+        function changeActiveTrack(newTrack) {
+            if (activeAudioTrack) {
+                activeAudioTrack.pause();
+                activeAudioTrack.currentTime = 0;
+            }
+            activeAudioTrack = newTrack;
+            if (activeAudioTrack && !isGlobalMuted) {
+                activeAudioTrack.play().catch(e => console.log("Unlock required"));
+            }
+        }
+
+        function toggleMuteSwitch() {
+            if (isGlobalMuted) {
+                isGlobalMuted = false;
+                document.getElementById('audio-status').innerText = "Audio Active";
+                document.getElementById('audio-icon').innerText = "🔊";
+                if (activeAudioTrack) activeAudioTrack.play();
+            } else {
+                isGlobalMuted = true;
+                document.getElementById('audio-status').innerText = "Muted";
+                document.getElementById('audio-icon').innerText = "🔇";
+                if (activeAudioTrack) activeAudioTrack.pause();
+            }
+        }
+
+        function generateStarfield() {
+            const container = document.getElementById('starfield');
+            const totalStars = 80;
+            for(let i=0; i<totalStars; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(star);
+            }
+        }
+
+        function openDoorTransition() {
+            changeActiveTrack(song1);
+            document.getElementById('scene-exterior').classList.remove('active');
+            document.getElementById('scene-doorway').classList.add('active');
+            renderPOVDialogue('initial');
+        }
+
+        function renderPOVDialogue(stage) {
+            const container = document.getElementById('pov-dialogue-box');
+            const face = document.getElementById('boy-avatar-pov');
+            let content = "";
+
+            if (stage === 'initial') {
+                face.innerText = "👦";
+                content = `
+                    <p style="margin-bottom: 15px; font-size: 17px;">Hello dear <b>${targetGirlName}</b>, you have received a parcel from <b>${senderName}</b>.</p>
+                    <button class="btn-primary" onclick="acceptParcel()">Receive</button>
+                    <button class="btn-secondary" onclick="renderPOVDialogue('ignore_1')">Ignore</button>
+                `;
+            } else if (stage === 'ignore_1') {
+                face.innerText = "😥";
+                content = `
+                    <p style="margin-bottom: 15px; font-size: 17px; font-weight: bold;">"No ma'am you have to take this"</p>
+                    <button class="btn-primary" onclick="acceptParcel()">Receive</button>
+                    <button class="btn-secondary" onclick="renderPOVDialogue('ignore_2')">Ignore</button>
+                `;
+            } else if (stage === 'ignore_2') {
+                face.innerText = "😭";
+                content = `
+                    <p style="margin-bottom: 15px; font-size: 16px; color: #ff4757; font-weight:600;">"Ma'am if you don't take this order I'll lose my job and my family will go to begging stage please take ma'am"</p>
+                    <button class="btn-primary" onclick="acceptParcel()">Receive</button>
+                    <button class="btn-secondary" onclick="renderPOVDialogue('ignore_3')">Ignore</button>
+                `;
+            } else if (stage === 'ignore_3') {
+                face.innerText = "😡";
+                content = `
+                    <p style="margin-bottom: 15px; font-size: 17px; color: #ff7f50; font-weight: bold;">"I don't care if you take or not am keeping this parcel here byee"</p>
+                    <button class="btn-primary" onclick="acceptParcel()">Pick up the parcel</button>
+                `;
+            }
+            container.innerHTML = content;
+        }
+
+        function acceptParcel() {
+            const container = document.getElementById('pov-dialogue-box');
+            document.getElementById('boy-avatar-pov').innerText = "😇";
+            container.innerHTML = `
+                <p style="margin-bottom: 12px; font-weight: bold;">Thank you! Please rate us:</p>
+                <div class="star-rating" style="margin-bottom: 15px;">
+                    <span onclick="setStars(1)">★</span><span onclick="setStars(2)">★</span><span onclick="setStars(3)">★</span><span onclick="setStars(4)">★</span><span onclick="setStars(5)">★</span>
+                </div>
+                <div id="rate-thankyou" style="display:none; font-weight:bold; color:#2ed573; margin-bottom:12px;">Thank you! Rate applied!</div>
+                <button class="btn-primary" onclick="goToParcelScene()">Open Parcel</button>
+            `;
+        }
+
+        function setStars(count) {
+            const stars = document.querySelectorAll('.star-rating span');
+            stars.forEach((s, idx) => s.classList.toggle('active', idx < count));
+            document.getElementById('rate-thankyou').style.display = 'block';
+        }
+
+        function goToParcelScene() {
+            document.getElementById('scene-doorway').classList.remove('active');
+            document.getElementById('scene-parcel').classList.add('active');
+        }
+
+        function showKeyVerification() {
+            document.getElementById('parcel-hint-text').style.display = 'none';
+            document.getElementById('key-auth-area').style.display = 'flex';
+        }
+
+        function checkPasskey() {
+            const val = document.getElementById('passkey-input').value.trim().toUpperCase();
+            const log = document.getElementById('error-logs');
+
+            if (val === correctSecretKey) {
+                log.style.color = "#2ed573";
+                log.innerText = "Finally you did keep calm and enjoy the magic ✨";
+                setTimeout(() => {
+                    document.getElementById('scene-parcel').classList.remove('active');
+                    document.getElementById('scene-celebration').classList.add('active');
+                }, 2000);
+                return;
+            }
+
+            failCount++;
+            if (failCount === 1) log.innerText = "Ohh wrong pass try again";
+            else if (failCount === 2) log.innerText = "Nonononono still failed try again";
+            else if (failCount === 3) log.innerText = `Ahh I see now do you know Rupa? Then remember and try again`;
+            else if (failCount === 4) log.innerText = "This is serious and you have only 3 more chances";
+            else if (failCount === 5) log.innerText = "Try asking the name";
+            else if (failCount === 6) log.innerText = "Why ego here you'll miss if you still fails to open please ask";
+            else if (failCount === 7) log.innerText = "Your last try asking name is the only way otherwise everything will vanished";
+            else {
+                log.innerText = "I said enter name!";
+            }
+            document.getElementById('passkey-input').value = "";
+        }
+
+        function initiateVirtualParty() {
+            document.getElementById('pre-celebration-message').style.display = 'none';
+            document.getElementById('scene-celebration').classList.add('ambient-glow-active');
+            document.getElementById('room-decor').style.opacity = "1";
+            
+            setTimeout(() => {
+                document.getElementById('interactive-cake-zone').style.display = "flex";
+            }, 1000);
+        }
+
+        function lightCandles() {
+            document.getElementById('candle-fire').style.display = 'block';
+            document.getElementById('btn-lit-candles').style.display = 'none';
+            document.getElementById('btn-blow-candles').style.display = 'inline-block';
+            changeActiveTrack(null); 
+        }
+
+        function blowCandles() {
+            document.getElementById('candle-fire').style.display = 'none';
+            document.getElementById('btn-blow-candles').style.display = 'none';
+            
+            changeActiveTrack(song2); 
+            document.getElementById('shining-bday-title').style.display = 'block';
+            
+            fxType = 'confetti';
+            setTimeout(() => { fxType = 'balloons'; }, 1500);
+            
+            // Modified to wait exactly 15 seconds before creating the bubble prompt overlay
+            setTimeout(() => {
+                if(fxType !== 'hearts') fxType = 'balloons';
+                
+                const miniModal = document.createElement('div');
+                miniModal.className = "anime-bubble";
+                miniModal.style.position = "absolute";
+                miniModal.style.zIndex = "999";
+                miniModal.style.borderColor = "var(--luxury-gold)";
+                miniModal.innerHTML = `
+                    <p style="margin-bottom:15px; color:#2f3542; font-weight:500;">I have lot to tell you but I'll cover them when we celebrate together but for now I have drafted some so let's go through them.</p>
+                    <button class="btn-primary" onclick="showLetterScene()">Let's Go 💌</button>
+                `;
+                document.getElementById('scene-celebration').appendChild(miniModal);
+            }, 15000); 
+        }
+
+        function showLetterScene() {
+            changeActiveTrack(song3); 
+            document.getElementById('scene-celebration').classList.remove('active');
+            document.getElementById('scene-letter').classList.add('active');
+            fxType = 'hearts'; 
+            startTypewriterSequence();
+        }
+
+        // Typewriter Engine Logic
+        function startTypewriterSequence() {
+            const container = document.getElementById('letter-box-container');
+            let currentParagraphIndex = 0;
+
+            function typeNextParagraph() {
+                if (currentParagraphIndex >= letterParagraphs.length) {
+                    const endingNode = document.createElement('div');
+                    endingNode.style.textAlign = 'center';
+                    endingNode.style.marginTop = '25px';
+                    endingNode.style.fontSize = '28px';
+                    endingNode.innerHTML = "🎉 🌸 🍰 🧸";
+                    container.appendChild(endingNode);
+                    container.scrollTop = container.scrollHeight;
+                    return;
+                }
+
+                const rawText = letterParagraphs[currentParagraphIndex];
+                const lineElement = document.createElement('div');
+                lineElement.className = 'letter-line';
+                
+                // Keep the styling configurations for structural highlights intact
+                if (currentParagraphIndex === 0 || currentParagraphIndex === letterParagraphs.length - 1) {
+                    lineElement.style.fontWeight = 'bold';
+                    lineElement.style.fontSize = '22px'; // Upgraded scaling for key lines
+                    if(currentParagraphIndex === 0) {
+                        lineElement.style.textAlign = 'center';
+                        lineElement.style.marginBottom = '25px';
+                    }
+                }
+
+                container.appendChild(lineElement);
+                lineElement.classList.add('visible');
+
+                let charIndex = 0;
+                const cursor = document.createElement('span');
+                cursor.className = 'typed-cursor';
+                lineElement.appendChild(cursor);
+
+                function typeChar() {
+                    if (charIndex < rawText.length) {
+                        cursor.before(rawText.charAt(charIndex));
+                        charIndex++;
+                        container.scrollTop = container.scrollHeight;
+                        setTimeout(typeChar, 40); 
+                    } else {
+                        cursor.remove(); 
+                        currentParagraphIndex++;
+                        setTimeout(typeNextParagraph, 800); 
+                    }
+                }
+                typeChar();
+            }
+            typeNextParagraph();
+        }
+
+        // --- ENGINE GENERATIVE OVERLAY ---
+        const canvas = document.getElementById('fxCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function initCanvasFX() {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            setInterval(drawEngine, 30);
+        }
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function drawEngine() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (!fxType) return;
+
+            if (particles.length < 70) {
+                if (fxType === 'confetti' || fxType === 'balloons') {
+                    const luxuryPalette = ['#ffd700', '#111111', '#ffffff', '#d4af37', '#ff6b81'];
+                    if(Math.random() > 0.4) {
+                        particles.push({
+                            type: 'confetti',
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * -40,
+                            size: Math.random() * 6 + 4,
+                            speed: Math.random() * 4 + 3,
+                            color: luxuryPalette[Math.floor(Math.random() * luxuryPalette.length)],
+                            drift: Math.random() * 2 - 1
+                        });
+                    } else {
+                        particles.push({
+                            type: 'balloon',
+                            x: Math.random() * canvas.width,
+                            y: canvas.height + 40,
+                            radius: Math.random() * 16 + 14,
+                            speed: Math.random() * 2 + 1.5,
+                            color: luxuryPalette[Math.floor(Math.random() * luxuryPalette.length)],
+                            sway: Math.random() * 2 - 1
+                        });
+                    }
+                } else if (fxType === 'hearts') {
+                    particles.push({
+                        type: 'heart',
+                        x: Math.random() * canvas.width,
+                        y: -20,
+                        hSize: Math.random() * 12 + 10,
+                        speed: Math.random() * 2 + 1,
+                        color: Math.random() > 0.4 ? '#ff6b81' : '#ffd700'
+                    });
+                }
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                if (p.type === 'confetti') {
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size * 1.3);
+                    p.y += p.speed; p.x += p.drift;
+                } else if (p.type === 'balloon') {
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color; ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(p.x, p.y + p.radius);
+                    ctx.lineTo(p.x, p.y + p.radius + 25);
+                    ctx.strokeStyle = '#ced6e0'; ctx.stroke();
+                    p.y -= p.speed; p.x += Math.sin(p.y / 20) * p.sway;
+                } else if (p.type === 'heart') {
+                    ctx.fillStyle = p.color; ctx.beginPath(); ctx.moveTo(p.x, p.y);
+                    ctx.bezierCurveTo(p.x - p.hSize/2, p.y - p.hSize/2, p.x - p.hSize, p.y + p.hSize/3, p.x, p.y + p.hSize);
+                    ctx.bezierCurveTo(p.x + p.hSize, p.y + p.hSize/3, p.x + p.hSize/2, p.y - p.hSize/2, p.x, p.y);
+                    ctx.fill(); p.y += p.speed;
+                }
+
+                if (p.y > canvas.height + 100 || p.y < -100) {
+                    particles.splice(i, 1); i--;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
