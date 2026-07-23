@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Honey ❤️ - Tejvignesh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #07070c;
+            --card-bg: rgba(14, 14, 22, 0.75);
+            --accent: #ff4d6d;
+            --accent-glow: rgba(255, 77, 109, 0.25);
+            --text-color: #e6e6ef;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Interactive Canvas for Living Constellation & Ripple effect */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Main Scroll Layout */
+        .manuscript-container {
+            position: relative;
+            z-index: 10;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 80px 24px 150px 24px;
+        }
+
+        /* Cinematic Header */
+        .header-section {
+            text-align: center;
+            margin-bottom: 70px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInDrop 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: #ff758c;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 30px rgba(255, 117, 140, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #9a9ab0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeInDrop {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Paragraph Manuscript Blocks */
+        .manuscript-block {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 77, 109, 0.15);
+            border-radius: 16px;
+            padding: 32px 36px;
+            margin-bottom: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .manuscript-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .manuscript-block:hover {
+            border-color: rgba(255, 77, 109, 0.4);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.7), 0 0 25px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .manuscript-block p {
+            font-family: 'Lora', serif;
+            font-size: 1.12rem;
+            line-height: 1.9;
+            color: #f0f0f5;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, rgba(255, 77, 109, 0.12), rgba(14, 14, 22, 0.8));
+            border-left: 4px solid var(--accent);
+        }
+
+        .highlight-card p {
+            font-style: italic;
+            color: #ffccd5;
+        }
+
+        /* Signature block */
+        .signature-block {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: rgba(255, 77, 109, 0.05);
+            border: 1px dashed rgba(255, 77, 109, 0.3);
+            border-radius: 16px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+
+        .signature-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .signature-names {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #ff758c;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .coding-tribute {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #8b8b9e;
+            font-style: italic;
+        }
+
+        /* Interactive pulse guide */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: -30px;
+            margin-bottom: 40px;
+            color: #7a7a92;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        @media(max-width: 600px) {
+            .manuscript-container {
+                padding: 40px 16px 100px 16px;
+            }
+            h1 {
+                font-size: 2.1rem;
+            }
+            .manuscript-block {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="manuscript-container">
+        <div class="header-section">
+            <h1>Happy Birthday Honey ❤️</h1>
+            <p class="subtitle">A Living Memoir Written in Code</p>
+        </div>
+
+        <div class="scroll-indicator">↓ Scroll down slowly to read every memory ↓</div>
+
+        <!-- Dynamic Content Blocks -->
+        <div class="manuscript-block">
+            <p>Asal ee roju ela untundo anukoledu. Just imagine chey... manam inthaku mundhu la unte ee rojini entha range lo celebrate cheskune vallamo.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>School nunchi, college varaku, office varaku... prathi stage kalisi unnam. Gurtunda? Mana intlo vallu oppukoledu. Godavalu ayyayi. Chala matalu padam. Kani manam edaram, strong ga unnam. "Evaru em annina sare, manam ilaage undham" ani promise chesukunnam.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Nuvvu hostel ki vellaka na life motham travel lo ne poyindi. Prathi month 2-3 times vache vadni. Bus ekkadaniki, digadaniki, malli ravadam... anni ni kosame. Nuvvu periods lo unnapudu phone chesi ninnu chinna pillala ga "pain unda? water tagava? medicine veskunnava?" ani adigevaadni. Oka matta kosam, 1 hour nuvvu tho matladadaniki naaku aa 1 hour chaalu. Adhe naaku festival la undedi.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Relatives lo chala mandhiki nuvvu telusu. "Thanu evaru?" ani adigithe "mi Vadhina" ani cheppevanni. Manam kalisi chusina kastalu anni... naa startup success ayyaka nuvvu tho life long happy ga undali ani, naa family ni nuvvu chusukovali ani. Nenu success avvalani, naa startup start cleyyadaniki prathi step lo nuvve naaku motivation vi. "Nuvvu chesthav, nenu unna" ani nuvvu annav. Andhuke nenu inka fight chesthunna.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Kani suddenly em ayyindi? Disturbance vachindi. Ekada miss ayyam? Nenu em thappu chesano kuda naku clarity ledu. Nuvvu kuda perfect reason cheppaledu. Closure kuda ivvaledu.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Nenu ego tho vundalanukoledu. Nuvvu lekunda na startup kuda boring ga undi. Success vachina kuda share cheskovadaniki nuvvu lekapothe waste. Nuvvu navvuthu unte chalu ani anevanni. Ippudu nuvvu navvuthunava leda ani kuda teliyadam ledu.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Nuvvu lekunda bathukutha. Kani nuvvu unna life matram chaala beautiful. Nuvvu unna rojulu chala bagundevi. Atleast ni valla happy undevadni. Nuvvu happy ga unte chalu. Ninnu nuvvu baaga chusuko. Nenu em expect cheyyadam ledu. Return prema expect cheyyadam ledu. Just oka friend ga, oka 6 years partner ga wish cheddam anipinchindi.</p>
+        </div>
+
+        <div class="manuscript-block highlight-card">
+            <p>Last year bday ki nuvvu echina ee hair band na body lo oka part la aipoindhi. Asalu thiyaleka pothuna.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Emaina thappu chesunte sorry. Aina avvanu. Endhuku ante e godavalo thappu evaridi, right evaridi ani damage aipoindhi.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Naa manasulo matram nuvvu eppatikaina special ey. Naa prathi kshanam, naa prathi kashtam, naa prathi emotion lo nuvvu untav. Take care. Nuvvu ekkada unna HAPPY GA UNDU. God bless you.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Kani final ga okati cheptha... nuvvu hostel lo unnapudu aa konni months lo ninnu entha baga chuskovali anukunano, degara undi ala chuskuna. Nuvvu echina ee prema chalu. Ee life lo vere prema midha interest kuda ledu.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Nuvvu anukuntav "vidy andhariki chepukunnadu" ani. Nen cheppaledu. Kani nen effect aina mental pressure ki ala telisindi andhariki. But thanks for making me mentally strong. Eni kastalu vachina chinna ga kanipisthunai aa badha mundhu. Appatikaina niku thodu undedi nen matramey. Adhi nik appatiki ardham avudho. Niku malli kastam vachina, mana madhya entha dooram unna, niku need undhi ante andari kanna nene mundhu untaa.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>Take care. Jagrathaga undu. Happy ga undu. Ee life ki love ante nuveney. Vere vallu vastharu, nenu malli love lo padatha ani anukunte nanu nenu mosam cheskunnatley untadi. Nenu em ninnu "malli natho undu" ani force cheyyanu. Adaganu kuda. Ni life nik nachinattu undu.</p>
+        </div>
+
+        <div class="manuscript-block">
+            <p>But adhi oka roju, oka nimisham anipisthadi nik kuda... Nenu premalo entha pichodni ani. Naa laga ninnu, mi intlo vallatho saha, avaru ekkuva preminchaleru ani nuvvu oppukovu. Gani adhe nijam. Be happy. Bday. Sorry for this.</p>
+        </div>
+
+        <div class="signature-block manuscript-block" style="border: none;">
+            <p style="font-family: 'Inter', sans-serif; font-size: 1.05rem; margin-bottom: 10px;">Gurthu petuko...</p>
+            <div class="signature-names">
+                Nuvvu <span style="color:#ffffff;">"Saitejaswi"</span> ney.<br>
+                Nenu <span style="color:#ffffff;">"Tejvignesh"</span> a.<br>
+                Adhi matram maradhu ❤️
+            </div>
+            <div class="coding-tribute">
+                Prathi sari na hand skills tho cheyadam alavatu ga ee sari nik saripoye tattu coding nerchukoni ila wish chesthuna.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Persistent Audio Setup: Starts from 120s onwards, loops back to 120s when it ends
+        document.addEventListener("DOMContentLoaded", () => {
+            let bgAudio = document.getElementById('persistent-bg-audio');
+            
+            const START_TIME = 72; // 120 seconds mark
+
+            if (!bgAudio) {
+                bgAudio = new Audio('./song2.mp3');
+                bgAudio.id = 'persistent-bg-audio';
+                
+                const savedTime = localStorage.getItem('bgAudioTime');
+                
+                if (savedTime) {
+                    bgAudio.currentTime = parseFloat(savedTime);
+                } else {
+                    bgAudio.currentTime = START_TIME;
+                }
+                
+                // Custom loop logic for 120s to end
+                bgAudio.addEventListener('timeupdate', () => {
+                    if (bgAudio.duration && bgAudio.currentTime >= bgAudio.duration - 0.5) {
+                        bgAudio.currentTime = START_TIME;
+                        bgAudio.play().catch(() => {});
+                    }
+                });
+                
+                bgAudio.play().then(() => {
+                    localStorage.setItem('bgAudioPlaying', 'true');
+                }).catch(() => {
+                    const unlockAudio = () => {
+                        bgAudio.play();
+                        localStorage.setItem('bgAudioPlaying', 'true');
+                        window.removeEventListener('click', unlockAudio);
+                        window.removeEventListener('scroll', unlockAudio);
+                    };
+                    window.addEventListener('click', unlockAudio);
+                    window.addEventListener('scroll', unlockAudio);
+                });
+                
+                setInterval(() => {
+                    if (!bgAudio.paused) {
+                        localStorage.setItem('bgAudioTime', bgAudio.currentTime);
+                    }
+                }, 500);
+            }
+        });
+
+        // Interactive Canvas particle system
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, stars = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < 70; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 1.8 + 0.4,
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    alpha: Math.random() * 0.7 + 0.2
+                });
+            }
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 117, 140, ${s.alpha})`;
+                ctx.fill();
+                s.x += s.speedX;
+                s.y += s.speedY;
+                if (s.x < 0) s.x = width;
+                if (s.x > width) s.x = 0;
+                if (s.y < 0) s.y = height;
+                if (s.y > height) s.y = 0;
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Scroll Intersection Observer for smooth block reveal
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.manuscript-block').forEach(block => {
+            observer.observe(block);
+        });
+    </script>
+</body>
+</html>

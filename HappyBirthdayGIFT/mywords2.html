@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Honey ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f17;
+            --card-bg: rgba(26, 26, 38, 0.85);
+            --accent-pink: #ff6b81;
+            --accent-glow: rgba(255, 107, 129, 0.3);
+            --text-main: #f1f1f6;
+            --text-muted: #a0a0b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        /* Floating background elements / particles simulation */
+        .ambient-glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 107, 129, 0.15) 0%, rgba(15, 15, 23, 0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            animation: floatGlow 8s ease-in-out infinite alternate;
+        }
+
+        .ambient-glow-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(120, 115, 245, 0.1) 0%, rgba(15, 15, 23, 0) 70%);
+            bottom: -150px;
+            right: -150px;
+            z-index: 0;
+            animation: floatGlow 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 750px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 107, 129, 0.2);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-pink);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 20px rgba(255, 107, 129, 0.4);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { text-shadow: 0 0 15px rgba(255, 107, 129, 0.4); }
+            50% { text-shadow: 0 0 25px rgba(255, 107, 129, 0.7); }
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Paragraphs with smooth entry */
+        .letter-body {
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 15px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-pink) rgba(255,255,255,0.05);
+        }
+
+        .letter-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        .letter-body::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+        }
+        .letter-body::-webkit-scrollbar-thumb {
+            background: var(--accent-pink);
+            border-radius: 10px;
+        }
+
+        p {
+            margin-bottom: 22px;
+            line-height: 1.8;
+            color: #dcdce6;
+            font-size: 1.02rem;
+            transition: color 0.3s ease;
+        }
+
+        p:hover {
+            color: #ffffff;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 129, 0.1), rgba(255, 107, 129, 0.03));
+            border-left: 4px solid var(--accent-pink);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: #ffccd5;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-box:hover {
+            transform: translateX(5px);
+        }
+
+        /* Sign-off / Names */
+        .names-tag {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+            color: #ff8787;
+            font-size: 1.1rem;
+            letter-spacing: 1.2px;
+        }
+
+        .coding-note {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 15px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Floating Hearts Animation Background */
+        .heart {
+            position: absolute;
+            color: rgba(255, 107, 129, 0.3);
+            font-size: 1.2rem;
+            user-select: none;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.8;
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media(max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Floating Hearts Generation Container -->
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Happy Birthday Honey ❤️</h1>
+            <p class="subtitle">A special wish crafted with love and code</p>
+        </div>
+
+        <div class="letter-body">
+            <p>Asal ee roju ela untundo anukoledu. Just imagine chey... manam inthaku mundhu la unte ee rojini entha range lo celebrate cheskune vallamo.</p>
+
+            <p>School nunchi, college varaku, office varaku... prathi stage kalisi unnam. Gurtunda? Mana intlo vallu oppukoledu. Godavalu ayyayi. Chala matalu padam. Kani manam edaram, strong ga unnam. "Evaru em annina sare, manam ilaage undham" ani promise chesukunnam.</p>
+
+            <p>Nuvvu hostel ki vellaka na life motham travel lo ne poyindi. Prathi month 2-3 times vache vadni. Bus ekkadaniki, digadaniki, malli ravadam... anni ni kosame. Nuvvu periods lo unnapudu phone chesi ninnu chinna pillala ga "pain unda? water tagava? medicine veskunnava?" ani adigevaadni. Oka matta kosam, 1 hour nuvvu tho matladadaniki naaku aa 1 hour chaalu. Adhe naaku festival la undedi.</p>
+
+            <p>Relatives lo chala mandhiki nuvvu telusu. "Thanu evaru?" ani adigithe "mi Vadhina" ani cheppevanni. Manam kalisi chusina kastalu anni... naa startup success ayyaka nuvvu tho life long happy ga undali ani, naa family ni nuvvu chusukovali ani. Nenu success avvalani, naa startup start cheyyadaniki prathi step lo nuvve naaku motivation vi. "Nuvvu chesthav, nenu unna" ani nuvvu annav. Andhuke nenu inka fight chesthunna.</p>
+
+            <p>Kani suddenly em ayyindi? Disturbance vachindi. Ekada miss ayyam? Nenu em thappu chesano kuda naku clarity ledu. Nuvvu kuda perfect reason cheppaledu. Closure kuda ivvaledu.</p>
+
+            <p>Nenu ego tho vundalanukoledu. Nuvvu lekunda na startup kuda boring ga undi. Success vachina kuda share cheskovadaniki nuvvu lekapothe waste. Nuvvu navvuthu unte chalu ani anevanni. Ippudu nuvvu navvuthunava leda ani kuda teliyadam ledu.</p>
+
+            <p>Nuvvu lekunda bathukutha. Kani nuvvu unna life matram chaala beautiful. Nuvvu unna rojulu chala bagundevi. Atleast ni valla happy undevadni. Nuvvu happy ga unte chalu. Ninnu nuvvu baaga chusuko. Nenu em expect cheyyadam ledu. Return prema expect cheyyadam ledu. Just oka friend ga, oka 6 years partner ga wish cheddam anipinchindi.</p>
+
+            <div class="highlight-box">
+                Last year bday ki nuvvu echina ee hair band na body lo oka part la aipoindhi. Asalu thiyaleka pothuna.
+            </div>
+
+            <p>Emaina thappu chesunte sorry. Aina avvanu. Endhuku ante e godavalo thappu evaridi, right evaridi ani damage aipoindhi.</p>
+
+            <p>Naa manasulo matram nuvvu eppatikaina special ey. Naa prathi kshanam, naa prathi kashtam, naa prathi emotion lo nuvvu untav.</p>
+
+            <p>Take care. Nuvvu ekkada unna HAPPY GA UNDU. God bless you.</p>
+
+            <p>Kani final ga okati cheptha... nuvvu hostel lo unnapudu aa konni months lo ninnu entha baga chuskovali anukunano, degara undi ala chuskuna. Nuvvu echina ee prema chalu. Ee life lo vere prema midha interest kuda ledu.</p>
+
+            <p>Nuvvu anukuntav "vidy andhariki chepukunnadu" ani. Nen cheppaledu. Kani nen effect aina mental pressure ki ala telisindi andhariki. But thanks for making me mentally strong. Eni kastalu vachina chinna ga kanipisthunai aa badha mundhu. Appatikaina niku thodu undedi nen matramey. Adhi nik appatiki ardham avudho. Niku malli kastam vachina, mana madhya entha dooram unna, niku need undhi ante andari kanna nene mundhu untaa.</p>
+
+            <p>Take care. Jagrathaga undu. Happy ga undu. Ee life ki love ante nuveney. Vere vallu vastharu, nenu malli love lo padatha ani anukunte nanu nenu mosam cheskunnatley untadi. Nenu em ninnu "malli natho undu" ani force cheyyanu. Adaganu kuda. Ni life nik nachinattu undu.</p>
+
+            <p>But adhi oka roju, oka nimisham anipisthadi nik kuda... Nenu premalo entha pichodni ani. Naa laga ninnu, mi intlo vallatho saha, avaru ekkuva preminchaleru ani nuvvu oppukovu. Gani adhe nijam.</p>
+
+            <p>Be happy. Bday. Sorry for this.</p>
+
+            <div class="names-tag">
+                Gurthu petuko... nuvvu "Saitejaswi" ney. Nenu "Tejvignesh" a.<br>Adhi matram maradhu
+            </div>
+            
+            <div class="coding-note">
+                Prathi sari na hand skills tho cheyadam alavatu ga ee sari nik saripoye tattu coding nerchukoni ila wish chesthuna.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating background hearts dynamically for smooth motion
+        const heartsContainer = document.getElementById('hearts-container');
+        const heartSymbols = ['❤️', '✨', '💖', '💫'];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 6 + 6) + 's'; // 6s to 12s
+            heart.style.fontSize = (Math.random() * 10 + 12) + 'px';
+            heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            
+            heartsContainer.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 12000);
+        }
+
+        setInterval(createHeart, 800);
+    </script>
+</body>
+</html>
